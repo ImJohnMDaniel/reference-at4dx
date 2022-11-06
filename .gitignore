@@ -31,8 +31,8 @@ Referenced Packages/
 # SFDX Related
 .sfdx/
 .sf/
-sfdx-source/common-base/main/default/
-sfdx-source/untracked/
+sfdx-source/untracked/*
+!sfdx-source/untracked/README.md
 .execanon
 
 # NPM Related
