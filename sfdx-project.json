@@ -27,11 +27,11 @@
       "default": false
     }
   ],
+  "name": "reference-at4dx",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "56.0",
   "pushPackageDirectoriesSequentially": true,
-  "name": "reference-at4dx",
   "packageAliases": {
     "reference-at4dx": "0Ho1T000000PAsmSAG",
     "reference-fflib-apex-mocks": "0Ho1T000000PAsXSAW",
