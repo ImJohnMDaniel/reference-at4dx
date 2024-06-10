@@ -38,8 +38,8 @@ private class ApplicationFactoryTest
         ITestAccountsSelector sel = (ITestAccountsSelector) Application.Selector.newInstance(Account.SObjectType);
         List<Account> accountList = sel.selectById(new Set<Id> {fflib_IdGenerator.generate(Account.SObjectType)});
 
-        System.assert(accountList != null);
-        System.assert(accountList.isEmpty());
+        System.Assert.isNotNull(accountList);
+        System.Assert.isTrue(accountList.isEmpty());
     }
 
     @IsTest
@@ -49,8 +49,8 @@ private class ApplicationFactoryTest
 
         List<Account> accountList = Application.Selector.selectById(new Set<Id> {fflib_IdGenerator.generate(Account.SObjectType)});
 
-        System.assert(accountList != null);
-        System.assert(accountList.isEmpty());
+        System.Assert.isNotNull(accountList);
+        System.Assert.isTrue(accountList.isEmpty());
     }
 
     @IsTest
@@ -70,8 +70,8 @@ private class ApplicationFactoryTest
 
         List<Account> accountList = (List<Account>) Application.Selector.selectByRelationship(contactList, Contact.AccountId);
 
-        System.assert(accountList != null);
-        System.assert(accountList.isEmpty());
+        System.Assert.isNotNull(accountList);
+        System.Assert.isTrue(accountList.isEmpty());
     }
 
     @IsTest
@@ -89,9 +89,34 @@ private class ApplicationFactoryTest
         ITestAccountsSelector sel = (ITestAccountsSelector) Application.Selector.newInstance(Account.SObjectType);
         List<Account> accountList = sel.selectById(new Set<Id> {fflib_IdGenerator.generate(Account.SObjectType)});
 
-        System.assert(accountList != null);
-        System.assertEquals(1, accountList.size());
-        System.assertEquals(acct.Id, accountList.get(0).Id);
+        System.Assert.isNotNull(accountList);
+        System.Assert.areEqual(1, accountList.size());
+        System.Assert.areEqual(acct.Id, accountList.get(0).Id);
+    }
+
+    @IsTest
+    private static void Application_Selector_PrioritizationTest()
+    {
+        List<ApplicationFactory_SelectorBinding__mdt> bindingList = new List<ApplicationFactory_SelectorBinding__mdt>();
+
+        ApplicationFactory_SelectorBinding__mdt accountsSelectorBinding = new ApplicationFactory_SelectorBinding__mdt();
+        accountsSelectorBinding.BindingSObjectAlternate__c = 'Account';
+        accountsSelectorBinding.To__c = 'ApplicationFactoryTest.TestAccountsSelector';
+        bindingList.add(accountsSelectorBinding);
+
+        // NOTE: As of 2023-3-11, CMDT records cannot be inserted in the test context.  Still.
+        // Normally the canonical SOQL orders the bindings from lowest to highest priority with Nulls first.
+        // Being later in the list simulates being higher priority, per the SOQL Order By.
+        // This second, higher-priority selector binding should be the one instanced by the Factory.
+        accountsSelectorBinding = new ApplicationFactory_SelectorBinding__mdt();
+        accountsSelectorBinding.BindingSObjectAlternate__c = 'Account';
+        accountsSelectorBinding.To__c = 'ApplicationFactoryTest.MockAccountsSelector';
+        bindingList.add(accountsSelectorBinding);
+
+        List<ApplicationFactory_SelectorBinding__mdt> refinedBindingList = ApplicationSObjectSelectorDIModule.prioritizeBindings(bindingList);
+
+        Assert.areEqual(bindingList.get(1).To__c, refinedBindingList.get(0).To__c);
+        Assert.areEqual(1, refinedBindingList.size());
     }
 
     /********************************************************
@@ -133,8 +158,8 @@ private class ApplicationFactoryTest
         TestService serv = new TestService();
         String phrase = serv.getHelloWorldPhrase('Jane Doe');
 
-        System.assert(String.isNotBlank(phrase));
-        System.assertEquals('Hello Jane Doe!!!', phrase);
+        System.Assert.isTrue(String.isNotBlank(phrase));
+        System.Assert.areEqual('Hello Jane Doe!!!', phrase);
     }
     
     @IsTest
@@ -148,8 +173,33 @@ private class ApplicationFactoryTest
         TestService serv = new TestService();
         String phrase = serv.getHelloWorldPhrase('Jane Doe');
 
-        System.assert(String.isNotBlank(phrase));
-        System.assertEquals('this is the mock', phrase);
+        System.Assert.isTrue(String.isNotBlank(phrase));
+        System.Assert.areEqual('this is the mock', phrase);
+    }
+
+    @IsTest
+    private static void Application_Service_MultiServiceTest()
+    {
+        List<ApplicationFactory_ServiceBinding__mdt> bindingList = new List<ApplicationFactory_ServiceBinding__mdt>();
+
+        ApplicationFactory_ServiceBinding__mdt binding = new ApplicationFactory_ServiceBinding__mdt();
+        binding.BindingInterface__c = 'ApplicationFactoryTest.ITestService';
+        binding.To__c = 'ApplicationFactoryTest.TestServiceImpl';
+        bindingList.add(binding);
+
+        // NOTE: As of 2023-3-11, CMDT records cannot be inserted in the test context.  Still.
+        // Normally the canonical SOQL orders the bindings from lowest to highest priority with Nulls first.
+        // Being later in the list simulates being higher priority, per the SOQL Order By.
+        // This second, higher-priority service binding should be the one instanced by the Factory.
+        binding = new ApplicationFactory_ServiceBinding__mdt();
+        binding.BindingInterface__c = 'ApplicationFactoryTest.ITestService';
+        binding.To__c = 'ApplicationFactoryTest.TestServiceMockImpl';
+        bindingList.add(binding);
+
+        List<ApplicationFactory_ServiceBinding__mdt> refinedBindingList = ApplicationServiceDIModule.prioritizeBindings(bindingList);
+
+        Assert.areEqual(bindingList.get(1).To__c, refinedBindingList.get(0).To__c);
+        Assert.areEqual(1, refinedBindingList.size());
     }
 
     private static void configureServices()
@@ -170,7 +220,7 @@ private class ApplicationFactoryTest
         configureDomains();
 
         ITestOnlyAccounts test_domain = new TestOnlyAccounts(new List<Account>()).newInstance(new List<Account>());
-        System.assert(test_domain != null);
+        System.Assert.isNotNull(test_domain);
     }
 
     @IsTest
@@ -179,7 +229,7 @@ private class ApplicationFactoryTest
         configureDomains();
 
         ITestOnlyAccounts test_domain = new TestOnlyAccounts(new List<Account>()).newInstance(new List<Account>(), Account.SObjectType);
-        System.assert(test_domain != null);
+        System.Assert.isNotNull(test_domain);
     }
 
     @IsTest
@@ -191,7 +241,7 @@ private class ApplicationFactoryTest
 
         Application.Domain.setMock(mock_domain);
         ITestOnlyAccounts test_domain = new TestOnlyAccounts(new List<Account>()).newInstance(new List<Account>());
-        System.assert(test_domain != null);
+        System.Assert.isNotNull(test_domain);
     }
 
     @IsTest
@@ -203,7 +253,7 @@ private class ApplicationFactoryTest
 
         Application.Domain.setMock(mock_domain);
         ITestOnlyAccounts test_domain = new TestOnlyAccounts(new List<Account>()).newInstance(new List<Account>(), Account.SObjectType);
-        System.assert(test_domain != null);
+        System.Assert.isNotNull(test_domain);
     }
 
     private static void configureDomains()
@@ -231,16 +281,16 @@ private class ApplicationFactoryTest
         configureUnitOfWork();
 
         IApplicationSObjectUnitOfWork uow = Application.UnitOfWork.newInstance();
-        System.assert(uow != null);
+        System.Assert.isNotNull(uow);
 
         uow = Application.UnitOfWork.newInstance(new List<SObjectType> {Account.SObjectType, Contact.SObjectType});
-        System.assert(uow != null);
+        System.Assert.isNotNull(uow);
 
         uow = Application.UnitOfWork.newInstance(new MockDml());
-        System.assert(uow != null);
+        System.Assert.isNotNull(uow);
 
         uow = Application.UnitOfWork.newInstance(new List<SObjectType> {Account.SObjectType, Contact.SObjectType}, new MockDml());
-        System.assert(uow != null);
+        System.Assert.isNotNull(uow);
     }
 
     private static void configureUnitOfWork()
