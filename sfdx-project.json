@@ -4,8 +4,8 @@
       "path": "sfdx-source/core",
       "default": true,
       "package": "reference-at4dx",
-      "versionName": "reference-at4dx v1.0.0",
-      "versionNumber": "1.0.0.NEXT",
+      "versionName": "reference-at4dx v1.1.0",
+      "versionNumber": "1.1.0.NEXT",
       "dependencies": [
         {
           "package": "reference-fflib-apex-mocks@1.1.1-1"
