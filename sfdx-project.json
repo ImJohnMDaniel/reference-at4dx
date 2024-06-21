@@ -30,7 +30,7 @@
   "name": "reference-at4dx",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "60.0",
+  "sourceApiVersion": "61.0",
   "packageAliases": {
     "reference-at4dx": "0Ho1T000000PAsmSAG",
     "reference-fflib-apex-mocks": "0Ho1T000000PAsXSAW",
