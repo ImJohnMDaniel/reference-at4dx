@@ -8,13 +8,13 @@
       "versionNumber": "1.2.0.NEXT",
       "dependencies": [
         {
-          "package": "reference-fflib-apex-mocks@1.2.0-1"
+          "package": "reference-fflib-apex-mocks@1.3.0-1"
         },
         {
-          "package": "reference-fflib-apex-common@1.1.0-2"
+          "package": "reference-fflib-apex-common@1.2.0-1"
         },
         {
-          "package": "reference-force-di@1.2.0-1"
+          "package": "reference-force-di@1.3.0-1"
         }
       ]
     },
@@ -30,15 +30,15 @@
   "name": "reference-at4dx",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "61.0",
+  "sourceApiVersion": "63.0",
   "packageAliases": {
     "reference-at4dx": "0Ho1T000000PAsmSAG",
     "reference-fflib-apex-mocks": "0Ho1T000000PAsXSAW",
     "reference-fflib-apex-common": "0Ho1T000000PAscSAG",
     "reference-force-di": "0Ho1T000000PAshSAG",
     "reference-at4dx@1.3.1-1": "04t6e000001y0EIAAY",
-    "reference-fflib-apex-mocks@1.2.0-1": "04tHs000000qTipIAE",
-    "reference-fflib-apex-common@1.1.0-2": "04tHs000000qTizIAE",
-    "reference-force-di@1.2.0-1": "04tHs000000qTikIAE"
+    "reference-fflib-apex-mocks@1.3.0-1": "04tHs000000rHlMIAU",
+    "reference-fflib-apex-common@1.2.0-1": "04tHs000000rIMvIAM",
+    "reference-force-di@1.3.0-1": "04tHs000000rIN0IAM"
   }
 }
